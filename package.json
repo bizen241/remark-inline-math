@@ -1,0 +1,29 @@
+{
+  "name": "@bizen241/remark-inline-math",
+  "description": "Inline math support for remark",
+  "version": "0.0.1",
+  "author": "bizen241",
+  "bugs": {
+    "url": "https://github.com/bizen241/remark-inline-math/issue"
+  },
+  "homepage": "https://github.com/bizen241/remark-inline-math#readme",
+  "keywords": [
+    "markdown",
+    "remark",
+    "plugin"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhysd/remark-inline-math.git"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "mocha test.js"
+  },
+  "devDependencies": {
+    "eslint": "^3.7.0",
+    "mocha": "^3.1.0",
+    "remark": "^6.0.1"
+  }
+}
