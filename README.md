@@ -1,6 +1,8 @@
 remark-inline-math
 =================
 
+[![Build Status](https://travis-ci.org/bizen241/remark-inline-math.svg?branch=master)](https://travis-ci.org/bizen241/remark-inline-math)
+
 This is a [remark](https://github.com/wooorm/remark) plugin to support inline math surrounded by dollar signs.
 
 ## Usage
