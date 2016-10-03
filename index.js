@@ -2,7 +2,7 @@ function locator (value, fromIndex) {
 	return value.indexOf('$', fromIndex);
 }
 
-const RE_MATH = /^\$((?:\\\$|[^$])+)\$/;
+const RE_MATH = /^\$((?:\\\$|[^$\n])+)\$/;
 
 function tokenizer (eat, value, silent) {
 	const match = RE_MATH.exec(value);
