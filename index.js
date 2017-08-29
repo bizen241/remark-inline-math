@@ -5,9 +5,22 @@ function locator (value, fromIndex) {
 const RE_MATH = /^\$((?:\\\$|[^$\n])+)\$/;
 
 function tokenizer (eat, value, silent) {
+	const opening = value.slice(0, 2);
+
+	if (opening === '\\\$') {
+		if (silent) {
+			return true;
+		}
+
+		return eat(opening)({
+			type: 'text',
+			value: '$',
+		});
+	}
+
 	const match = RE_MATH.exec(value);
 
-	if (match) {
+	if (match !== null) {
 		if (silent) {
 			return true;
 		}
