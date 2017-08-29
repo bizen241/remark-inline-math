@@ -1,7 +1,7 @@
 {
   "name": "@bizen241/remark-inline-math",
   "description": "Inline math support for remark",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "bizen241",
   "bugs": {
     "url": "https://github.com/bizen241/remark-inline-math/issue"
