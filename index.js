@@ -23,10 +23,9 @@ function tokenizer (eat, value, silent) {
 }
 
 tokenizer.locator = locator;
-tokenizer.notInLink = true;
 
-function plugin (processor) {
-	const Parser =  processor.Parser;
+function plugin () {
+	const Parser =  this.Parser;
 	const tokenizers = Parser.prototype.inlineTokenizers;
 	const methods = Parser.prototype.inlineMethods;
 
