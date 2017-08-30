@@ -8,34 +8,69 @@ This is a [remark](https://github.com/wooorm/remark) plugin to support inline ma
 ## Usage
 
 ```js
-const remark = require('remark');
-const math = require('@bizen241/remark-inline-math');
+const unified = require('unified');
+const parse = require('remark-parse');
+const remarkInlineMath = require('@bizen241/remark-inline-math');
 
 const doc = '$1\\$ = 1$';
-const ast = remark().use(math).parse(doc);
+const ast = unified()
+    .use(parse)
+    .use(remarkInlineMath)
+    .parse(doc);
 ```
 
 Yields:
 
 ```json
 {
-	"type": "root",
-	"children": [
-		{
-			"type": "paragraph",
-			"children": [
-				{
-					"type": "inlineCode",
-					"value": "1\\$ = 1",
-					"data": {
-						"lang": "math"
-					}
-				}
-			]
-		}
-	]
+    "type": "root",
+    "children": [
+        {
+            "type": "paragraph",
+            "children": [
+                {
+                    "type": "inlineCode",
+                    "value": "1\\$ = 1",
+                    "data": {
+                        "lang": "math"
+                    }
+                }
+            ]
+        }
+    ]
 }
 ```
+
+or
+
+```html
+<p><code>1\$ = 1</code></p>
+```
+
+## API
+
+### `origin.use(remarkInlineMath[, options])`
+
+#### `options`
+
++ `builder` (`Function`)
+    + `@param {string} value` - math expression (e.g. `1 + 1 = 2`)
+    + `@returns {MdastNode}` - [MDAST node](https://github.com/syntax-tree/mdast)
+
+Example:
+
+```js
+const options = {
+    builder: (value) => ({
+        type: 'inlineCode',
+        value,
+        data: {
+            hName: 'math',
+        },
+    }),
+};
+```
+
 
 ## License
 

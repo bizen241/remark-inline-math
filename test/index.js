@@ -3,7 +3,7 @@ const unified = require('unified');
 const parse = require('remark-parse');
 const markdown = require('remark-stringify');
 const html = require('remark-html');
-const math = require('../');
+const remarkInlineMath = require('../');
 const fs = require('fs');
 const path = require('path');
 
@@ -19,7 +19,7 @@ describe('remark-inline-math', () => {
 	describe('with no option', () => {
 		const processor = unified()
 			.use(parse, options)
-			.use(math)
+			.use(remarkInlineMath)
 			.use(markdown);
 
 		const dirpath = join(__dirname, 'fixtures', 'default');
@@ -47,7 +47,7 @@ describe('remark-inline-math', () => {
 		});
 		const processor = unified()
 			.use(parse, options)
-			.use(math, { builder })
+			.use(remarkInlineMath, { builder })
 			.use(html);
 
 		const dirpath = join(__dirname, 'fixtures', 'custom');
