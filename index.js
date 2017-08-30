@@ -2,42 +2,52 @@ function locator (value, fromIndex) {
 	return value.indexOf('$', fromIndex);
 }
 
-const RE_MATH = /^\$((?:\\\$|[^$\n])+)\$/;
+const INLINE_MATH = /^\$((?:\\\$|[^$\n])+)\$/;
 
-function tokenizer (eat, value, silent) {
-	const opening = value.slice(0, 2);
+function plugin (options) {
+	options = options || {};
 
-	if (opening === '\\\$') {
-		if (silent) {
-			return true;
-		}
+	const builder = options.builder;
 
-		return eat(opening)({
-			type: 'text',
-			value: '$',
-		});
-	}
+	function tokenizer (eat, value, silent) {
+		const opening = value.slice(0, 2);
 
-	const match = RE_MATH.exec(value);
-
-	if (match !== null) {
-		if (silent) {
-			return true;
-		}
-
-		return eat(match[0])({
-			type: 'inlineCode',
-			value: match[1].trim(),
-			data: {
-				lang: 'math'
+		if (opening === '\\\$') {
+			if (silent) {
+				return true;
 			}
-		});
+
+			return eat(opening)({
+				type: 'text',
+				value: '$',
+			});
+		}
+
+		const match = INLINE_MATH.exec(value);
+
+		if (match !== null) {
+			if (silent) {
+				return true;
+			}
+
+			const substring = match[0];
+			const value = match[1].trim();
+
+			const custom = (builder !== undefined) ? builder(value) : undefined;
+
+			const node = custom || {
+				type: 'inlineCode',
+				value,
+				data: {
+					lang: 'math',
+				},
+			};
+
+			return eat(substring)(node);
+		}
 	}
-}
+	tokenizer.locator = locator;
 
-tokenizer.locator = locator;
-
-function plugin () {
 	const Parser =  this.Parser;
 	const tokenizers = Parser.prototype.inlineTokenizers;
 	const methods = Parser.prototype.inlineMethods;

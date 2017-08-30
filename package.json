@@ -25,6 +25,7 @@
     "@types/node": "^6.0.41",
     "eslint": "^3.7.0",
     "mocha": "^3.1.0",
+    "remark-html": "^6.0.1",
     "remark-parse": "^4.0.0",
     "remark-stringify": "^4.0.0",
     "unified": "^6.1.5"
