@@ -10,58 +10,67 @@ const path = require('path');
 const read = fs.readFileSync;
 const join = path.join;
 
+const compare = (fixturesDirpath, fixtureNames, inputExt, outputExt, processor) => {
+	fixtureNames.forEach(fixtureName => {
+		const filepath = join(fixturesDirpath, fixtureName);
+		const input = read(join(filepath, `input.${inputExt}`), 'utf-8');
+		const output = read(join(filepath, `output.${outputExt}`), 'utf-8');
+		const result = processor(input);
+
+		it(fixtureName, () => {
+			assert.equal(result, output);
+		});
+	});
+};
+
 const options = {
 	commonmark: true,
 	pedantic: true
 };
 
+const rootDirpath = join(__dirname, 'fixtures');
+
 describe('remark-inline-math', () => {
-	describe('with no option', () => {
-		const processor = unified()
-			.use(parse, options)
-			.use(remarkInlineMath)
-			.use(markdown);
+	describe('markdown', () => {
+		const markdownDirpath = join(rootDirpath, 'markdown');
 
-		const dirpath = join(__dirname, 'fixtures', 'default');
-		const fixtures = fs.readdirSync(dirpath);
+		describe('to markdown', () => {
+			const processor = unified()
+				.use(parse, options)
+				.use(remarkInlineMath)
+				.use(markdown);
 
-		fixtures.forEach(fixture => {
-			const filepath = join(dirpath, fixture);
-			const input = read(join(filepath, 'input.md'), 'utf-8');
-			const output = read(join(filepath, 'output.md'), 'utf-8');
-			const result = processor.processSync(input).toString();
+			const fixturesDirpath = join(markdownDirpath, 'to-markdown');
+			const fixtureNames = fs.readdirSync(fixturesDirpath);
 
-			it(fixture, () => {
-				assert.equal(result, output);
-			});
+			compare(fixturesDirpath, fixtureNames, 'md', 'md', (input) => (
+				processor.processSync(input).toString()
+			));
 		});
 	});
 
-	describe('with builder option', () => {
-		const builder = (value) => ({
-			type: 'inlineCode',
-			value: value,
-			data: {
-				hName: 'math',
-			},
-		});
-		const processor = unified()
-			.use(parse, options)
-			.use(remarkInlineMath, { builder })
-			.use(html);
+	describe('option', () => {
+		const optionsDirpath = join(rootDirpath, 'options');
 
-		const dirpath = join(__dirname, 'fixtures', 'custom');
-		const fixtures = fs.readdirSync(dirpath);
-
-		fixtures.forEach(fixture => {
-			const filepath = join(dirpath, fixture);
-			const input = read(join(filepath, 'input.md'), 'utf-8');
-			const output = read(join(filepath, 'output.html'), 'utf-8');
-			const result = processor.processSync(input).toString();
-
-			it (fixture, () => {
-				assert.equal(result, output);
+		describe('builder', () => {
+			const builder = (value) => ({
+				type: 'inlineCode',
+				value: value,
+				data: {
+					hName: 'math',
+				},
 			});
+			const processor = unified()
+				.use(parse, options)
+				.use(remarkInlineMath, { builder })
+				.use(html);
+
+			const fixturesDirpath = join(optionsDirpath, 'builder');
+			const fixtureNames = fs.readdirSync(fixturesDirpath);
+
+			compare(fixturesDirpath, fixtureNames, 'md', 'html', (input) => (
+				processor.processSync(input).toString()
+			));
 		});
 	});
 });

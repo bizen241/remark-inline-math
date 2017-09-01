@@ -2,7 +2,7 @@ function locator (value, fromIndex) {
 	return value.indexOf('$', fromIndex);
 }
 
-const INLINE_MATH = /^\$((?:\\\$|[^$\n])+)\$/;
+const INLINE_MATH = /^\$((?:\\\$|[^$])+)\$/;
 
 function plugin (options) {
 	options = options || {};

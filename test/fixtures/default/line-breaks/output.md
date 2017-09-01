@@ -1,3 +1,0 @@
-$
-\\mathcal{F} \\neq \\emptyset
-$
