@@ -5,6 +5,8 @@ remark-inline-math
 
 This is a [remark](https://github.com/wooorm/remark) plugin to support inline math surrounded by dollar signs.
 
+> ### :warning: It's highly recommended to use [`remark-math`](https://github.com/Rokt33r/remark-math) instead of this package.
+
 ## Usage
 
 ```js
